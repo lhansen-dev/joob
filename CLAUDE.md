@@ -6,5 +6,6 @@ A job-hunting helper. Users are often new to Claude Code and the terminal, so us
 - **Importing a resume:** use the `docx-md` skill to convert it into `resumes/<Name>_Resume_<date>.md`.
 - **Polishing the main resume** (no specific job): use the `resume-polish` skill. It writes `resumes/<Name>_Resume_Master_<date>.md`.
 - **Tailoring:** use the `resume-tailoring` skill. Its library is `resumes/*.md`. Save its output to `resumes/tailored/`, not the repo root.
+- **Cover letters:** use the `cover-letter` skill after tailoring. It reuses the tailoring report and saves to `resumes/tailored/`.
 - **Exporting:** use the `docx-md` skill to turn files in `resumes/tailored/` into `.docx`.
 - Personal data stays in `resumes/` and `jobs/`, which are gitignored. Never write it to tracked paths.

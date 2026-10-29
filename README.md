@@ -4,7 +4,7 @@
 
 **Find jobs and tailor your resume by chatting with an AI.**
 
-You tell Claude what job you want. It searches the job boards, picks good matches, and rewrites your resume for each one without inventing anything. When you're done it hands you a Word file. You send the applications yourself.
+You tell Claude what job you want. It searches the job boards, picks good matches, and rewrites your resume for each one without inventing anything. It can write a matching cover letter too. When you're done it hands you Word files. You send the applications yourself.
 
 ![Python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
 ![Claude Code](https://img.shields.io/badge/Claude_Code-skills-D97757?logo=claude&logoColor=white)
@@ -119,9 +119,15 @@ Claude will:
 
 It never invents jobs, skills or numbers. It only rewords and reorders what's true.
 
+### Step 3½: Write a cover letter (optional)
+
+> Write a cover letter for it
+
+Claude reuses everything it learned while tailoring: the job posting, its research on the company, and your strongest matching stories. It asks you two or three quick questions, the main one being *why you actually want this job*, because that's the one thing research can't tell it. Then it writes a short letter that doesn't sound AI-generated, and shows where each claim came from.
+
 ### Step 4: Get a Word file
 
-> Export it to Word
+> Export both to Word
 
 The file goes in `resumes/tailored/`. Open it, check the formatting, and you're ready to apply.
 
@@ -154,6 +160,7 @@ The file goes in `resumes/tailored/`. Open it, check the formatting, and you're 
 - `search.py` wraps [JobSpy](https://github.com/speedyapply/JobSpy): `uv run search.py "term" "City, ST" --sites indeed,linkedin --n 30 --hours 72`, which writes `jobs/<term>.csv`.
 - `.claude/skills/resume-tailoring/` is bundled from [varunr89/resume-tailoring-skill](https://github.com/varunr89/resume-tailoring-skill) (MIT, commit `9a4a0f2`).
 - `.claude/skills/resume-polish/` audits `resumes/*.md` and writes a master resume. It's a prompt-only skill with no code. Its "grill me" mode is adapted from [mattpocock/skills `grilling`](https://github.com/mattpocock/skills).
+- `.claude/skills/cover-letter/` writes a cover letter from the tailoring output. It's a prompt-only skill with no code.
 - `.claude/skills/docx-md/` converts between `.md` and `.docx` with pandoc (bundled by `pypandoc-binary`): `uv run .claude/skills/docx-md/convert.py IN OUT`.
 - `CLAUDE.md` tells Claude how the pieces fit together.
 
