@@ -2,87 +2,151 @@
 
 # joob
 
-**Find jobs. Tailor resumes. Skip the grind.**
+**Find jobs and tailor your resume by chatting with an AI.**
 
-Search several job boards at once, then let Claude Code research the company and tailor a resume for the role. It stops before submitting, so you still send every application yourself.
+You tell Claude what job you want. It searches the job boards, picks good matches, and rewrites your resume for each one without inventing anything. When you're done it hands you a Word file. You send the applications yourself.
 
 ![Python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
-![uv](https://img.shields.io/badge/uv-managed-DE5FE9?logo=uv&logoColor=white)
-![Claude Code](https://img.shields.io/badge/Claude_Code-skill-D97757?logo=claude&logoColor=white)
+![Claude Code](https://img.shields.io/badge/Claude_Code-skills-D97757?logo=claude&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
 </div>
 
 ---
 
-## How it works
+## What you need
 
-```
- search.py ──▶ jobs/*.csv ──▶ Claude Code + resume-tailoring skill ──▶ tailored resume
- (JobSpy)      full JDs        reads resumes/, researches the company
-```
+- A **Claude subscription** (Pro or Max) or an Anthropic API account. Claude Code is the AI you'll be chatting with.
+- About **10 minutes** for setup. You only do it once.
+- Your **current resume**, as a Word file or plain text.
 
-1. **Search.** [JobSpy](https://github.com/speedyapply/JobSpy) gets postings from Indeed, LinkedIn, Glassdoor and ZipRecruiter, including the full job descriptions.
-2. **Tailor.** The bundled `resume-tailoring` skill compares a posting with your existing resumes and asks about experience they don't mention. It writes a tailored resume and never invents experience.
+You won't write any code. You type everything in normal English.
 
-## Quick start
+## One-time setup
 
-You need [uv](https://docs.astral.sh/uv/) and [Claude Code](https://claude.com/claude-code).
+You'll paste a few commands into a **terminal**, the app where you type commands:
 
+- **Mac:** open **Terminal** (press ⌘ + Space and type "Terminal").
+- **Windows:** open **PowerShell** from the Start menu.
+- **Linux:** you already know.
+
+### 1. Install Claude Code
+
+Mac / Linux:
 ```sh
-git clone https://github.com/lhansen-dev/joob && cd joob
+curl -fsSL https://claude.ai/install.sh | bash
+```
+Windows:
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+### 2. Install uv
+
+uv runs the job search tool.
+
+Mac / Linux:
+```sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+Windows:
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+**Close the terminal and open a new one** so it notices the new programs.
+
+### 3. Download joob
+
+If you have git:
+```sh
+git clone https://github.com/lhansen-dev/joob
+cd joob
 uv sync
-mkdir resumes   # put your existing resumes here as markdown
 ```
 
-## Search
+If you don't, click the green **Code** button at the top of this page, choose **Download ZIP**, and unzip it. In the terminal, type `cd ` (with a space after it), drag the unzipped folder into the window, and press Enter. Then run `uv sync`.
+
+### 4. Start Claude
 
 ```sh
-uv run search.py "python developer" "Austin, TX"
+claude
 ```
 
-Results go to `jobs/<search_term>.csv`, and a summary table is printed.
+The first time, it asks you to log in. After that you'll see a chat prompt, and everything else happens there.
 
-| Flag      | Default          | What it does                                                  |
-| --------- | ---------------- | ------------------------------------------------------------- |
-| `--sites` | `indeed,linkedin`| Comma-separated: `indeed`, `linkedin`, `glassdoor`, `zip_recruiter` |
-| `--n`     | `30`             | Results per site                                              |
-| `--hours` | `72`             | Only show postings newer than this many hours                 |
+## How to use it
+
+Type these into Claude, in your own words. Claude asks permission before it runs anything, and you can say yes.
+
+### Step 1: Give Claude your resume
+
+> Import my resume from ~/Downloads/My_Resume.docx
+
+Claude converts it and saves it in the `resumes/` folder. Older versions help too, because they give Claude more material to work with. Import as many as you have.
 
 > [!TIP]
-> - **Indeed** is the most reliable site and doesn't rate-limit.
-> - **LinkedIn** starts rate-limiting at around 10 pages, so keep `--n` small.
-> - Use a real location for LinkedIn. `"Remote"` returns jobs from anywhere in the world.
-> - Glassdoor and ZipRecruiter often fail.
+> If you don't know where the file is, drag it into the Claude window and Claude will get the path.
 
-## Tailor
+### Step 2: Find jobs
 
-Start `claude` in this folder. The skill loads automatically from `.claude/skills/`. Then ask:
+> Find me senior data engineer jobs in Vancouver posted this week
 
-> tailor my resume for row 3 in jobs/python_developer.csv
+Claude searches Indeed and LinkedIn and shows you a list. You can then ask:
 
-The skill will:
+> Which of these fit my resume best?
 
-- research the company and the role
-- pick the strongest material from every resume in `resumes/`
-- ask about relevant experience your resumes don't include
-- write a tailored resume, plus a report showing how it matches the posting
+### Step 3: Tailor your resume
 
-You can tailor for several jobs in one go:
+> Tailor my resume for the Autodesk one
 
-> tailor resumes for these 3 jobs: rows 1, 4 and 7
+Claude will:
 
-> [!NOTE]
-> Word and PDF output need a document-skills plugin. Without one, the skill writes markdown only.
+1. Research the company.
+2. Show you how well your resume matches the posting, and what's missing.
+3. **Ask you questions** about experience your resume doesn't mention. These answers make the biggest difference, so take a minute on them.
+4. Write the tailored resume, plus a report explaining each change and giving tips for the interview.
 
-## Privacy
+It never invents jobs, skills or numbers. It only rewords and reorders what's true.
 
-`jobs/` and `resumes/` are gitignored, so your resumes and search results never get committed.
+### Step 4: Get a Word file
 
-## Credits
+> Export it to Word
 
-- [JobSpy](https://github.com/speedyapply/JobSpy) for scraping the job boards (MIT)
-- [varunr89/resume-tailoring-skill](https://github.com/varunr89/resume-tailoring-skill) for the tailoring skill (MIT, bundled from commit `9a4a0f2`)
+The file goes in `resumes/tailored/`. Open it, check the formatting, and you're ready to apply.
+
+## Other things to try
+
+| Ask Claude... | What happens |
+| --- | --- |
+| *"Find remote Python jobs in Canada"* | A different search |
+| *"Tailor for these 3 jobs at once"* | Answers your questions once and reuses them for all three resumes |
+| *"Make it shorter"* / *"Lead with leadership"* | Revises the resume |
+| *"What should I prep for the interview?"* | Gives interview tips based on the report |
+
+## Your privacy
+
+- Your resumes and search results stay **on your computer**, in `resumes/` and `jobs/`. Both folders are excluded from git, so they never get uploaded with the code.
+- Claude reads your resume to tailor it, the same as pasting it into a chat.
+
+## Troubleshooting
+
+- **"command not found: claude" or "uv"**: close the terminal and open a new one. If that doesn't work, run the install command again.
+- **Few or no results from LinkedIn**: LinkedIn limits how many searches you can run. Ask Claude to use Indeed only, or try again later.
+- **Weird location results**: use a real city ("Austin, TX"), not just "Remote".
+- **Something else**: ask Claude! For example, *"the search failed, can you fix it?"*
+
+---
+
+<details>
+<summary><b>For developers</b></summary>
+
+- `search.py` wraps [JobSpy](https://github.com/speedyapply/JobSpy): `uv run search.py "term" "City, ST" --sites indeed,linkedin --n 30 --hours 72`, which writes `jobs/<term>.csv`.
+- `.claude/skills/resume-tailoring/` is bundled from [varunr89/resume-tailoring-skill](https://github.com/varunr89/resume-tailoring-skill) (MIT, commit `9a4a0f2`).
+- `.claude/skills/docx-md/` converts between `.md` and `.docx` with pandoc (bundled by `pypandoc-binary`): `uv run .claude/skills/docx-md/convert.py IN OUT`.
+- `CLAUDE.md` tells Claude how the pieces fit together.
+
+</details>
 
 ## License
 
