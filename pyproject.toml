@@ -1,6 +1,7 @@
 [project]
 name = "joob"
 version = "0.1.0"
+description = "Search job boards and tailor resumes with Claude Code"
 requires-python = ">=3.12"
 dependencies = [
     "python-jobspy>=1.4.1",
