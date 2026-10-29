@@ -88,6 +88,16 @@ Claude converts it and saves it in the `resumes/` folder. Older versions help to
 > [!TIP]
 > If you don't know where the file is, drag it into the Claude window and Claude will get the path.
 
+### Step 1½: Polish it (optional, but worth it)
+
+> Polish my resume
+
+Claude checks all your resumes for weak bullet points, inconsistencies between versions (like different dates), and formatting that screening software has trouble reading. It asks you for real numbers and facts instead of inventing them, then writes one cleaned-up **master resume** and shows you each change it made. Every tailored resume after that starts from this better version.
+
+> Grill me on my resume
+
+This is the thorough version. Claude asks you questions about every bullet, a few rounds at a time: what exactly *you* did, how big it was, and what changed because of it. It keeps going until each bullet has real substance. Each question includes Claude's suggestion, so often you can just answer "yes". It takes longer, but it's the best way to turn "helped improve things" into something a recruiter remembers.
+
 ### Step 2: Find jobs
 
 > Find me senior data engineer jobs in Vancouver posted this week
@@ -143,6 +153,7 @@ The file goes in `resumes/tailored/`. Open it, check the formatting, and you're 
 
 - `search.py` wraps [JobSpy](https://github.com/speedyapply/JobSpy): `uv run search.py "term" "City, ST" --sites indeed,linkedin --n 30 --hours 72`, which writes `jobs/<term>.csv`.
 - `.claude/skills/resume-tailoring/` is bundled from [varunr89/resume-tailoring-skill](https://github.com/varunr89/resume-tailoring-skill) (MIT, commit `9a4a0f2`).
+- `.claude/skills/resume-polish/` audits `resumes/*.md` and writes a master resume. It's a prompt-only skill with no code. Its "grill me" mode is adapted from [mattpocock/skills `grilling`](https://github.com/mattpocock/skills).
 - `.claude/skills/docx-md/` converts between `.md` and `.docx` with pandoc (bundled by `pypandoc-binary`): `uv run .claude/skills/docx-md/convert.py IN OUT`.
 - `CLAUDE.md` tells Claude how the pieces fit together.
 
